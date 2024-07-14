@@ -1,17 +1,34 @@
 #!/usr/bin/env bash
 # Sets up a web server for deployment of web_static.
 
-sudo apt-get update
-sudo apt-get install -y nginx
-sudo ufw allow 'Nginx HTTP'
+# Install nginx
+apt-get update
+apt-get install -y nginx
 
+# Create directories and symbolic link
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
-echo "Holberton School" > /data/web_static/releases/test/index.html
+# Add html content to index
+echo '<html>
+	<head>
+	</head>
+	<body>
+		Holberton School
+	</body>
+</html>' > /data/web_static/releases/test/index.html
+# Create a symblic link
+if [ -d /data/web_static/current ]
+then
+	rm -rf /data/web_static/current
+fi
 ln -sf /data/web_static/releases/test/ /data/web_static/current
-chown -R ubuntu:ubuntu /data/
-chgrp -R ubuntu:ubuntu /data/
 
-sudo sed -i "s/server_name _;/server_name _;\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current;\n\t\tindex index.html index.htm;\n\t}/" /etc/nginx/sites-available/default
+# Give ownership to ubuntu
+chown -hR $USER:$USER /data/
 
-sudo systemctl reload nginx
+# Edit nginx config
+sed -i 's/server_name _;/server_name _;\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current;\n\t}/'\
+	/etc/nginx/sites-available/default
+ln -sf '/etc/nginx/sites-available/default' '/etc/nginx/sites-enabled/default'
+# Restart nginx
+service nginx restart
