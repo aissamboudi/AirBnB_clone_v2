@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Sets up a web server for deployment of web_static.
-#!/usr/bin/env bash
-# Sets up a web server for deployment of web_static.
+.
 if which nginx > /dev/null 2>&1; then
 sudo systemctl stop nginx
 sudo apt-get remove -y nginx
