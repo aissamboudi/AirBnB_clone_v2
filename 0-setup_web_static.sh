@@ -41,7 +41,8 @@ sudo rm -rf /data/web_static/current
 fi
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 # Give ownership to ubuntu
-sudo chown -hR "$USER":"$USER" /data/
+sudo chown -R ubuntu /data/
+sudo chgrp -R ubuntu /data/
 # Edit nginx config
 sudo ln -sf '/etc/nginx/sites-available/default' '/etc/nginx/sites-enabled/default'
 # Restart nginx
